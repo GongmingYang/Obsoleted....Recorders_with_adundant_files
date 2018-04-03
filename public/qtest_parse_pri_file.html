@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" type="text/css" href="/public/css/pkc.css">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/sb_admin.css" rel="stylesheet">
+    <script src="js/jsencrypt.js"></script>
+    <script src="js/prsa.js"></script>
+    <script src="js/jquery-1.12.3.min.js"></script>
+
+    <script type="text/javascript" src="/js/sha2.js"></script>
+    <script type="text/javascript" src="/js/aes.js"></script>
+    <script type="text/javascript" src="/js/pkc.js"></script>
+</head>
+
+<body>
+<input type='file'  onchange='openFile(event)'><br>
+<script>
+    var openFile = function(event) {
+        var input = event.target;
+
+        var reader = new FileReader();
+
+        reader.onload = function(){
+            var data = reader.result;
+
+            var prsa = new Prsa();
+
+            var c_file='';
+            var pwd = 'iGEbnG';
+            c_file = prsa.base64_decode(data);
+            var djson = prsa.aes_decrypt(pwd,c_file);
+            var fdata = JSON.parse(djson);
+
+            // $rpw = $p->pub_encrypt_strkey($this->pub_key, $p->hash($pwd));
+            // $prif['prk'] = $p->base64url_encode($p->aes_encrypt($rpw, $pri_key));
+
+            var pri_key1 = fdata['prk'];
+
+            // var output = document.getElementById('output');
+        };
+        reader.readAsBinaryString(input.files[0]);
+
+    };
+</script>
+
+
+</body>
+</html>
